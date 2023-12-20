@@ -11,8 +11,11 @@ const Header: React.FC = () => {
     <div className="left">
       <Link href="/">
         <a className="bold" data-active={isActive("/")}>
-          Feed
+          TODO List
         </a>
+      </Link>
+      <Link href="/new">
+          <a className="bold" data-active={isActive('/new')}>New TODO</a>
       </Link>
       <style jsx>{`
         .bold {
