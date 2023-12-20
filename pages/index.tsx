@@ -29,7 +29,8 @@ const Blog: React.FC<Props> = (props) => {
       <div className="page">
         <h2>My TODO List</h2>
         <main>
-          {props.feed.map((post) => (
+          {props.feed.sort((a, b) => Number(a.priority)- Number(b.priority))
+            .map((post) => (
             <div key={post.id} className="post">
               <Post post={post} />
             </div>

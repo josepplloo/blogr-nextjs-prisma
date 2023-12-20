@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Router from "next/router";
 import ReactMarkdown from "react-markdown";
 
@@ -11,13 +11,30 @@ export type PostProps = {
   } | null;
   content: string;
   published: boolean;
+  done: boolean;
+  priority: string;
 };
 
 const Post: React.FC<{ post: PostProps }> = ({ post }) => {
   const authorName = post.author ? post.author.name : "Unknown author";
+  const [done, setDone] = useState(false);
+
+  const handleDone = () => {
+    setDone(!done)
+  };
+
   return (
-    <div onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>
-      <h2>{post.title}</h2>
+    <div>
+      <label>
+        Done:
+          <input
+            type="checkbox"
+            name="done"
+            checked={done}
+            onChange={handleDone}
+          />
+      </label>
+      <h2 onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>{post.title}</h2>
       <small>By {authorName}</small>
       <ReactMarkdown children={post.content} />
       <style jsx>{`
