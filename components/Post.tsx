@@ -21,6 +21,7 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
 
   const handleDone = () => {
     setDone(!done)
+    // update the code
   };
 
   return (
@@ -34,6 +35,7 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
             onChange={handleDone}
           />
       </label>
+      <button>delete</button>
       <h2 onClick={() => Router.push("/p/[id]", `/p/${post.id}`)}>{post.title}</h2>
       <small>By {authorName}</small>
       <ReactMarkdown children={post.content} />

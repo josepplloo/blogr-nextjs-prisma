@@ -55,7 +55,7 @@ const NewTODO: React.FC = () => {
                 <option value="1">Important</option>
                 <option value="2">Normal</option>
                 <option value="3">Not urgent</option>
-                <option value="spider">Not urgent nor Important</option>
+                <option value="4">Not urgent nor Important</option>
             </select>
           </label>
 
