@@ -26,19 +26,24 @@ type Props = {
 const Blog: React.FC<Props> = (props) => {
   return (
     <Layout>
-      <div className="page">
+      <main className="page">
         <h2>My TODO List</h2>
-        <main>
+        <ul className="container">
           {props.feed.sort((a, b) => Number(a.priority)- Number(b.priority))
             .map((post) => (
-            <div key={post.id} className="post">
+            <li key={post.id} className="post">
               <Post post={post} />
-            </div>
+            </li>
           ))}
-        </main>
-      </div>
+        </ul>
+      </main>
       <style jsx>{`
+        .container {
+          list-style: outside none none;
+          padding: 0;
+        }
         .post {
+          border-radius: 4px;
           background: white;
           transition: box-shadow 0.1s ease-in;
         }
