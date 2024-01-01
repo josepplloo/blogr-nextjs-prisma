@@ -18,6 +18,7 @@ export type PostProps = {
 const Post: React.FC<{ post: PostProps }> = ({ post }) => {
   const authorName = post.author ? post.author.name : "Unknown author";
   const [done, setDone] = useState(post.done);
+  const [deleted, setDeleted] = useState('');
 
   const handleDone = async() => {
     const isDone = !done;
@@ -34,8 +35,23 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
     }
   };
 
+  const handleDelete = async () => {
+    if(window.confirm("Are you sure about that?")) {
+      const body = { id: post.id }
+      await fetch(`/api/delete`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+      });
+      setDeleted('fadeOutRight');
+      setTimeout(() => {
+        setDeleted('todo--invisible');
+      }, 1000);
+    }
+  };
+
   return (
-    <div>
+    <div className={deleted}>
       <section className="todo-actions">
         <label className="todo-action-done">
           Done:
@@ -46,7 +62,13 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
               onChange={handleDone}
             />
         </label>
-        <button aria-label="delete" className="todo-action-delete">Delete</button>
+        <button
+          aria-label="delete"
+          className="todo-action-delete"
+          onClick={handleDelete}
+        >
+          Delete
+        </button>
       </section>
       <article className={done ? `todo--done` : ''}>
         <h3
@@ -62,6 +84,10 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
         div {
           color: inherit;
           padding: 2rem;
+          transition: fadeOutRight;
+        }
+        .todo--invisible {
+          display: none
         }
         .todo-title{
           cursor: pointer;
@@ -85,6 +111,25 @@ const Post: React.FC<{ post: PostProps }> = ({ post }) => {
           color: #f2f2f2;
           padding: 4px 16px;
           font-size: medium;
+        }
+
+        @keyframes fadeOutRight {
+          from {
+            opacity: 1;
+          }
+        
+          to {
+            height: 0;
+            opacity: 0;
+            overflow: hidden;
+            padding: 0;
+            transform: translate3d(100%, 0, 0);
+          }
+        }
+        
+        .fadeOutRight {
+          animation-duration: 1s;
+          animation-name: fadeOutRight;
         }
       `}</style>
     </div>
