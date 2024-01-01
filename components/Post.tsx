@@ -17,11 +17,21 @@ export type PostProps = {
 
 const Post: React.FC<{ post: PostProps }> = ({ post }) => {
   const authorName = post.author ? post.author.name : "Unknown author";
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState(post.done);
 
-  const handleDone = () => {
-    setDone(!done)
-    // update the code
+  const handleDone = async() => {
+    const isDone = !done;
+    try {
+      const body = { id: post.id, done: isDone };
+      await fetch('/api/put/done', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      setDone(isDone);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
