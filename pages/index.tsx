@@ -3,8 +3,9 @@ import { GetStaticProps } from "next"
 import Layout from "../components/Layout"
 import Post, { PostProps } from "../components/Post"
 import prisma from '../lib/prisma'
-import { useSelector} from '../context/index';
+import { useSelector } from "../context/index"
 import { TODOSState } from "../context/reducer"
+import FiltersBar from "../components/FiltersBar"
 
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -40,7 +41,10 @@ const Blog: React.FC<Props> = (props) => {
   return (
     <Layout>
       <main className="page">
-        <h2>My TODO List</h2>
+        <article className="title-bar">
+          <h2>My TODO List</h2>
+          <FiltersBar />
+        </article>
         <ul className="container">
           {myList.sort((a, b) => Number(a.priority)- Number(b.priority))
             .map((post) => (
@@ -51,6 +55,11 @@ const Blog: React.FC<Props> = (props) => {
         </ul>
       </main>
       <style jsx>{`
+        .title-bar {
+          align-items: center;
+          display: flex;
+          justify-content: space-between;
+        }
         .container {
           list-style: outside none none;
           padding: 0;

@@ -1,9 +1,13 @@
 import { PostProps } from '../components/Post';
-type filterType = null | string;
+
+interface Filter {
+  filter: null | string;
+  filteredList: PostProps[];
+};
 
 export interface TODOSState {
   todos: PostProps[];
-  filter: filterType;
+  filter: null | string;
   filterResult: PostProps[];
 };
 
@@ -25,7 +29,7 @@ interface SetPosts {
 
 interface SetFilter {
   type: ActionsTypes.SET_FILTER;
-  payload: filterType;
+  payload: Filter;
 };
 
 export type Action = SetFilter | SetPosts;
@@ -35,7 +39,7 @@ export const actionCreators = {
     type: ActionsTypes.SET_TODOS,
     payload: todos
   }),
-  setFilter: (filter: filterType): SetFilter => ({
+  setFilter: (filter: Filter): SetFilter => ({
     type: ActionsTypes.SET_FILTER,
     payload: filter
   })
@@ -50,7 +54,8 @@ export const reducer = (
         return { ...state, todos: action.payload }
       }
       case ActionsTypes.SET_FILTER: {
-        return { ...state, filter: action.payload }
+        const { filter, filteredList } = action.payload
+        return { ...state, filter: filter, filterResult: filteredList }
       }
       default: {
         return state;
