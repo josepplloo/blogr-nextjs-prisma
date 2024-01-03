@@ -27,15 +27,22 @@ type Props = {
 }
 
 const Blog: React.FC<Props> = (props) => {
-  const todos = useSelector(
-    (state: TODOSState) => state.todos,
+  const todosContext: TODOSState = useSelector(
+    (state: TODOSState) => state,
   );
+  const {
+    todos,
+    filter,
+    filterResult
+  } = todosContext;
+  const myList = filter ? filterResult : todos
+
   return (
     <Layout>
       <main className="page">
         <h2>My TODO List</h2>
         <ul className="container">
-          {todos.sort((a, b) => Number(a.priority)- Number(b.priority))
+          {myList.sort((a, b) => Number(a.priority)- Number(b.priority))
             .map((post) => (
             <li key={post.id} className="post">
               <Post post={post} />
