@@ -3,6 +3,9 @@ import { GetStaticProps } from "next"
 import Layout from "../components/Layout"
 import Post, { PostProps } from "../components/Post"
 import prisma from '../lib/prisma'
+import { useSelector} from '../context/index';
+import { TODOSState } from "../context/reducer"
+
 
 export const getStaticProps: GetStaticProps = async () => {
   const feed = await prisma.post.findMany({
@@ -24,12 +27,15 @@ type Props = {
 }
 
 const Blog: React.FC<Props> = (props) => {
+  const todos = useSelector(
+    (state: TODOSState) => state.todos,
+  );
   return (
     <Layout>
       <main className="page">
         <h2>My TODO List</h2>
         <ul className="container">
-          {props.feed.sort((a, b) => Number(a.priority)- Number(b.priority))
+          {todos.sort((a, b) => Number(a.priority)- Number(b.priority))
             .map((post) => (
             <li key={post.id} className="post">
               <Post post={post} />
